@@ -176,7 +176,7 @@ with col2:
 with col3:
     st.write("Climbing Styles")   
     labels = style['style']
-    values = route_type['counts']
+    values = style['counts']
     style_fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
                                  insidetextorientation='radial'
                                 )])
