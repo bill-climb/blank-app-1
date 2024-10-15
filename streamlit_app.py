@@ -159,10 +159,7 @@ year_route_type=df.groupby(['year','Grade Type']).size().reset_index(name='count
 
 
 #content
-st.title("🎈 UKC Log Dashboard")
-st.write(
-    "Analyse your logs"
-)
+
 st.line_chart(
     year_route_type,
     x='year',
