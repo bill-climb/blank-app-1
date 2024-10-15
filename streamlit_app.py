@@ -56,11 +56,6 @@ route_type=route_type.sort_values('counts', ascending=True)
 partner_type=partner_type.sort_values('counts', ascending=True)
 partner=partner.sort_values('counts', ascending=True)
 
-st.title("🎈 UKC Log Dashboard")
-st.write(
-    "Analyse your logs"
-)
-
 # Find the partner with the most counts
 max_counts_row = partner.loc[partner['counts'].idxmax()]
 most_counts_partner = max_counts_row['Partner']
@@ -81,13 +76,32 @@ else:
 
 # Combine the summary and humorous text
 partner_text = summary_text + " " + funny_text
-st.write(partner_text)
+
+
+#content
+st.title("🎈 UKC Log Dashboard")
+st.write(
+    "Analyse your logs"
+)
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.write(partner_text)
+    partner_fig=px.bar(partner,x='counts',y='Partner', orientation='h')
+    st.write(partner_fig)
+
+with col2:
+    st.write("Types of climbing")   
+    route_fig=px.bar(route_type,x='counts',y='Grade Type', orientation='h')
+    st.write(route_fig)
+
+with col3:
+    st.header("An owl")
+    st.image("https://static.streamlit.io/examples/owl.jpg")
+
 ''
-partner_fig=px.bar(partner,x='counts',y='Partner', orientation='h')
-st.write(partner_fig)
-''
-route_fig=px.bar(route_type,x='counts',y='Grade Type', orientation='h')
-st.write(route_fig)
+
 ''
 
 
