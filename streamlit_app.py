@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(layout="wide")
 import altair as alt
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -51,18 +52,46 @@ route_type=df_split.groupby(['Grade Type']).size().reset_index(name='counts')
 partner_type=df_split.groupby(['Grade Type','Partner']).size().reset_index(name='counts')
 
 #sort
-route_type=route_type.sort_values('counts', ascending=False)
-partner_type=partner_type.sort_values('counts', ascending=False)
-partner=partner.sort_values('counts', ascending=False)
+route_type=route_type.sort_values('counts', ascending=True)
+partner_type=partner_type.sort_values('counts', ascending=True)
+partner=partner.sort_values('counts', ascending=True)
 
-fig=px.bar(partner,x='counts',y='Partner', orientation='h')
-st.write(fig)
-
-st.title("🎈 My new app")
+st.title("🎈 UKC Log Dashboard")
 st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
+    "Analyse your logs"
 )
 
+# Find the partner with the most counts
+max_counts_row = partner.loc[partner['counts'].idxmax()]
+most_counts_partner = max_counts_row['Partner']
+most_counts_value = max_counts_row['counts']
+
+# Generate summary text
+summary_text = f"You climbed the most with {most_counts_partner} - {most_counts_value} logs!"
+
+# Generate humorous text based on the number of partners
+num_partners = len(partner)
+
+if num_partners < 5:
+    funny_text = f"You only climbed with {num_partners} people this year. Looks like a small gathering! Do you need some more friends?!"
+elif num_partners < 10:
+    funny_text = f"You climbed with {num_partners} people this year. Enough for a fun game night i suppose!"
+else:
+    funny_text = f"You climbed with {num_partners} people this year. Wow, we've got a whole crowd! It's like a party in here!"
+
+# Combine the summary and humorous text
+partner_text = summary_text + " " + funny_text
+st.write(partner_text)
 ''
+partner_fig=px.bar(partner,x='counts',y='Partner', orientation='h')
+st.write(partner_fig)
+''
+route_fig=px.bar(route_type,x='counts',y='Grade Type', orientation='h')
+st.write(route_fig)
+''
+
+
+
+
 
 st.table(df)
