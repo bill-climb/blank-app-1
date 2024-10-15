@@ -26,34 +26,34 @@ df = load_data()
 
 # we want to count logs by partner
 
-    # Split the 'Partner' column by the delimiter ','
-    df_split = df.assign(Partner=df['Partner'].str.split(','))
-    
-    # Explode the 'Partner' column to create a new row for each partner
-    df_split = df_split.explode('Partner')
-    
-    # Strip any leading/trailing whitespace from the 'Partner' column
-    df_split['Partner'] = df_split['Partner'].str.strip()
-    
-    # Reorder the columns for clarity
-    df_split = df_split[['log_id', 'Grade Type', 'Partner']]
-    
-    #creating counts of logs by partner
-    
-    partner=df_split.groupby(['Partner']).size().reset_index(name='counts')
-    partner=partner.sort_values('counts', ascending=False)
-    
-    #counts of logs by route type
-    route_type=df_split.groupby(['Grade Type']).size().reset_index(name='counts')
-    
-    ##creating counts of logs by partner by grade type
-    
-    partner_type=df_split.groupby(['Grade Type','Partner']).size().reset_index(name='counts')
-    
-    #sort
-    route_type=route_type.sort_values('counts', ascending=False)
-    partner_type=partner_type.sort_values('counts', ascending=False)
-    partner=partner.sort_values('counts', ascending=False)
+# Split the 'Partner' column by the delimiter ','
+df_split = df.assign(Partner=df['Partner'].str.split(','))
+
+# Explode the 'Partner' column to create a new row for each partner
+df_split = df_split.explode('Partner')
+
+# Strip any leading/trailing whitespace from the 'Partner' column
+df_split['Partner'] = df_split['Partner'].str.strip()
+
+# Reorder the columns for clarity
+df_split = df_split[['log_id', 'Grade Type', 'Partner']]
+
+#creating counts of logs by partner
+
+partner=df_split.groupby(['Partner']).size().reset_index(name='counts')
+partner=partner.sort_values('counts', ascending=False)
+
+#counts of logs by route type
+route_type=df_split.groupby(['Grade Type']).size().reset_index(name='counts')
+
+##creating counts of logs by partner by grade type
+
+partner_type=df_split.groupby(['Grade Type','Partner']).size().reset_index(name='counts')
+
+#sort
+route_type=route_type.sort_values('counts', ascending=False)
+partner_type=partner_type.sort_values('counts', ascending=False)
+partner=partner.sort_values('counts', ascending=False)
 
 fig=px.bar(partner,x='counts',y='Partner', orientation='h')
 st.write(fig)
