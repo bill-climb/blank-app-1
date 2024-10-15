@@ -4,6 +4,7 @@ import altair as alt
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px 
+import plotly.graph_objects as go
 
 
 # Load the data from excel. We're caching this so it doesn't reload every time the app
@@ -93,7 +94,6 @@ with col1:
 
 with col2:
     st.write("Types of climbing")   
-    import plotly.graph_objects as go
     labels = route_type['Grade Type']
     values = route_type['counts']
     route.fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
