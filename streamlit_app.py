@@ -96,7 +96,7 @@ with col2:
     st.write("Types of climbing")   
     labels = route_type['Grade Type']
     values = route_type['counts']
-    route.fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
+    route_fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
                                  insidetextorientation='radial'
                                 )])
     st.write(route_fig)
