@@ -52,6 +52,10 @@ route_type=df_split.groupby(['Grade Type']).size().reset_index(name='counts')
 
 partner_type=df_split.groupby(['Grade Type','Partner']).size().reset_index(name='counts')
 
+#counts of logs by style
+style=df.groupby(['style']).size().reset_index(name='counts')
+style=style.sort_values('counts', ascending=False)
+
 #sort
 route_type=route_type.sort_values('counts', ascending=True)
 partner_type=partner_type.sort_values('counts', ascending=True)
@@ -78,6 +82,73 @@ else:
 # Combine the summary and humorous text
 partner_text = summary_text + " " + funny_text
 
+# Find the style with the most counts
+most_common_style_row = style.loc[style['counts'].idxmax()]
+most_common_style = most_common_style_row['style']
+most_common_counts = most_common_style_row['counts']
+
+# Extract counts for specific styles
+tr_counts = style.loc[style['style'] == 'TR', 'counts'].values[0]
+solo_counts = style.loc[style['style'] == 'Solo', 'counts'].values[0]
+
+# Generate summary text
+summary_text = (
+    f"You normally climbed {most_common_style} with {most_common_counts} logs. "
+    f"You've done {solo_counts} Solo climbs and {tr_counts} TR climbs."
+)
+# Generate summary text
+summary_text = f"You normally climbed {most_common_style} with {most_common_counts} logs."
+
+# Options for humorous text based on the most common style
+funny_text_options = {
+    'Lead': [
+        "Leading the way, I see! Who needs a safety net?",
+        "Wow, you really like to live on the edge—literally!",
+        "Looks like you're the captain of the climbing ship!"
+    ],
+    '2nd': [
+        "So you enjoy following the leader? Nice to have a trusty guide!",
+        "Being a second means you get the best view of the show!",
+        "Ah, the trusty 2nd—always there for support!"
+    ],
+    'Sent': [
+        "Sent it? I bet it felt great to conquer that route!",
+        "Congratulations on sending! That’s what I call a high-five!",
+        "Looks like you’re all about those epic sends!"
+    ],
+    'AltLd': [
+        "AltLd? Ah, the art of leading and following at the same time!",
+        "You're a true multi-tasker in the climbing world!",
+        "Sounds like you’re all about the best of both worlds!"
+    ],
+    'TR': [
+        "Top roping, huh? That's like driving with training wheels!",
+        "TR? It's all fun and games until someone falls!",
+        "Looks like you're keeping it safe up there!"
+    ],
+    'Solo': [
+        "Solo climbing? Living dangerously, I see!",
+        "No ropes? You must really trust your skills!",
+        "You must have nerves of steel to climb solo!"
+    ],
+    '-': [
+        "What does '-' mean? Is it a secret climbing style?",
+        "Looks like you’re keeping it mysterious with that dash!",
+        "Ah, the unknown! The wild card of climbing styles!"
+    ],
+}
+
+# Randomly select humorous text for the most common style
+funny_text = random.choice(funny_text_options[most_common_style])
+
+# Randomly select humorous texts for TR and Solo
+tr_humor = random.choice(funny_text_options['TR'])
+solo_humor = random.choice(funny_text_options['Solo'])
+
+# Combine the required texts into the final output
+climb_style_text = (
+    summary_text + " " + funny_text
+)
 
 #content
 st.title("🎈 UKC Log Dashboard")
@@ -102,9 +173,13 @@ with col2:
     st.write(route_fig)
 
 with col3:
-    st.header("An owl")
-    st.image("https://static.streamlit.io/examples/owl.jpg")
-
+    st.write("Climbing Styles")   
+    labels = style['style']
+    values = route_type['counts']
+    style_fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
+                                 insidetextorientation='radial'
+                                )])
+    st.write(style_fig)
 ''
 
 ''
