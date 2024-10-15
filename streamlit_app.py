@@ -93,7 +93,12 @@ with col1:
 
 with col2:
     st.write("Types of climbing")   
-    route_fig=px.bar(route_type,x='counts',y='Grade Type', orientation='h')
+    import plotly.graph_objects as go
+    labels = route_type['Grade Type']
+    values = route_type['counts']
+    route.fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
+                                 insidetextorientation='radial'
+                                )])route_fig=px.bar(route_type,x='counts',y='Grade Type', orientation='h')
     st.write(route_fig)
 
 with col3:
