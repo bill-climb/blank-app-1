@@ -22,6 +22,8 @@ def load_data():
     df['Date']=pd.to_datetime(df['Date'], format='%d/%b/%y')
     df["first star"]= df["Grade"].str.find('*')
     df[['overall grade','technical grade', 'star rating']] = df['Grade'].str.split(' ',expand=True)
+    df['year'] = pd.DatetimeIndex(df['Date']).year
+
     return df
 
 
@@ -151,12 +153,21 @@ climb_style_text = (
     summary_text + " " + funny_text
 )
 
+year_route_type=df.groupby(['year','Grade Type']).size().reset_index(name='counts')
+
+
+
 #content
 st.title("🎈 UKC Log Dashboard")
 st.write(
     "Analyse your logs"
 )
-
+st.line_chart(
+    year_route_type,
+    x='year',
+    y='counts',
+    color='Grade Type',
+)
 col1, col2, col3 = st.columns(3)
 
 with col1:
