@@ -23,6 +23,7 @@ def load_data():
     df["first star"]= df["Grade"].str.find('*')
     df[['overall grade','technical grade', 'star rating']] = df['Grade'].str.split(' ',expand=True)
     df['year'] = pd.DatetimeIndex(df['Date']).year
+    df['year'] = pd.to_numeric(df['year'])
 
     return df
 
