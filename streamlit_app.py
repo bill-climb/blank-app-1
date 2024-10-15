@@ -98,7 +98,7 @@ with col2:
     values = route_type['counts']
     route.fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
                                  insidetextorientation='radial'
-                                )])route_fig=px.bar(route_type,x='counts',y='Grade Type', orientation='h')
+                                )])
     st.write(route_fig)
 
 with col3:
